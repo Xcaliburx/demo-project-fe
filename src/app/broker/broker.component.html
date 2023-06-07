@@ -1,0 +1,29 @@
+
+<div class="container pt-5">
+    <div class="row">
+        <div class="col">
+            <h1>Broker List</h1>
+            <button class="btn btn-primary" type="button" (click)="onAddBroker()">Add new Broker</button>
+            <ul class="list-group">
+                <li class="list-group-item mt-3" *ngFor="let broker of brokers" >
+                    <a 
+                        [routerLink]="broker.id.toString()" 
+                        routerLinkActive="active" 
+                        style="cursor: pointer;"
+                    >
+                        <div>
+                            <h3>{{ broker.name }}</h3>
+                            <p>{{ broker.description }}</p>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col">
+            <router-outlet></router-outlet>
+        </div>
+
+    </div>
+</div>
+

@@ -1,0 +1,49 @@
+<div class="row">
+    <form [formGroup]="brokerForm" class="mt-4" (ngSubmit)="onSubmit()">
+        <h3>Create New Broker</h3>
+        <div class="mb-3 mt-4">
+            <label for="name" class="form-label">Broker Name</label>
+            <input 
+                type="name" 
+                class="form-control" 
+                id="name" 
+                formControlName="name"
+            >
+          </div>
+          <div class="mb-3">
+            <label for="desc" class="form-label">Description</label>
+            <textarea 
+                class="form-control" 
+                id="desc" 
+                rows="3" 
+                formControlName="description"
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">Phone</label>
+            <input 
+                type="phone" 
+                class="form-control" 
+                id="phone" 
+                formControlName="phone"
+            >
+          </div>
+          <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input 
+                type="name" 
+                class="form-control" 
+                id="location" 
+                formControlName="location"
+            >
+          </div>
+          <button 
+            class="btn btn-primary" 
+            type="submit"
+            [disabled]="!brokerForm.valid"
+          >
+            Submit
+          </button>
+    </form>
+</div>
+

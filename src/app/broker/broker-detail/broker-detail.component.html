@@ -1,0 +1,33 @@
+<div class="container">
+    <h1>{{ broker.name }}</h1>
+    <hr>
+    <h3>{{ broker.description }}</h3>
+    <h6>No Hp: {{ broker.phone }}</h6>
+    <h6>Location: {{ broker.location }}</h6>
+    <div>
+        <button 
+            class="btn btn-primary me-2 px-3"
+            (click)="onEdit()"
+        >Edit</button>
+        <button 
+            class="btn btn-danger"
+            (click)="onDelete()"
+        >Delete</button>
+    </div>
+    <br>
+
+    <div class="mb-3" *ngIf="broker.developers.length != 0; else noDev" >
+        <h4>Developer List</h4>
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let developer of broker.developers">
+                {{ developer.name }} - {{ developer.fee }}
+            </li>
+        </ul>
+    </div>
+    
+    <ng-template #noDev>
+        <h4>No Developer</h4>
+    </ng-template>
+    <button class="btn btn-primary" type="button">View Detail</button>
+
+</div>
