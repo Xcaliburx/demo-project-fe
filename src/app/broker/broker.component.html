@@ -9,11 +9,11 @@
                     <a 
                         [routerLink]="broker.id.toString()" 
                         routerLinkActive="active" 
-                        style="cursor: pointer;"
+                        style="cursor: pointer; color: black; text-decoration: none;"
                     >
                         <div>
                             <h3>{{ broker.name }}</h3>
-                            <p>{{ broker.description }}</p>
+                            <p>{{ broker.description || 'Description' }}</p>
                         </div>
                     </a>
                 </li>

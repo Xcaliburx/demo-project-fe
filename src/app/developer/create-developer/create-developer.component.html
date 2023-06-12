@@ -1,0 +1,39 @@
+<div class="row">
+    <form [formGroup]="developerForm" class="mt-4" (ngSubmit)="onSubmit()">
+        <h3>Create New Developer</h3>
+        <div class="mb-3 mt-4">
+            <label for="name" class="form-label">Developer Name</label>
+            <input 
+                type="name"
+                class="form-control"
+                id="name"
+                formControlName="name"
+            >
+        </div>
+        <div class="mb-3">
+            <label for="desc" class="form-label">Location</label>
+            <input 
+                type="name"
+                class="form-control"
+                id="location"
+                formControlName="location"
+            >
+        </div>
+        <div class="mb-3">
+            <label for="fee" class="form-label">Fee</label>
+            <input 
+                type="number"
+                class="form-control"
+                id="fee"
+                formControlName="fee"
+            >
+        </div>
+        <button
+            class="btn btn-primary"
+            type="submit"
+            [disabled]="!developerForm.valid"
+        >
+            Submit
+        </button>
+    </form>
+</div>

@@ -8,7 +8,6 @@ import { Subject } from "rxjs";
 })
 export class BrokerService {
     brokersChanged = new Subject<Broker[]>
-
     constructor(private http: HttpClient) {}
 
     fetchBroker () {

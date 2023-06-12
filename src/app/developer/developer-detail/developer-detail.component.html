@@ -1,16 +1,15 @@
 <div class="container">
-    <h1>{{ broker.name }}</h1>
+    <h1>{{ developer.name }}</h1>
     <hr>
-    <h3>{{ broker.description || 'Description' }}</h3>
-    <h6>No Hp: {{ broker.phone || '00' }}</h6>
-    <h6>Location: {{ broker.location || 'Location' }}</h6>
+    <h3>{{ developer.location || 'Location' }}</h3>
+    <h6>Developer: {{ developer.fee || '00' }}</h6>
 
-    <div *ngIf="broker.image">
+    <div *ngIf="developer.image">
         <img 
             [src]="image" 
-            [alt]="broker.image.url" 
+            [alt]="developer.image.url" 
             style="width: 250px;">
-        <h6>{{ broker.image.name }}</h6>
+        <h6>{{ developer.image.name }}</h6>
     </div>
     <br>
     <div>

@@ -1,4 +1,4 @@
-import { Developer } from './../developer/developer.model';
+import { Image } from './../shared/image/image.model';
 
 export class Broker {
     public id: number
@@ -6,14 +6,14 @@ export class Broker {
     public description: string
     public phone: string
     public location: string
-    public developers: Developer[]
+    public image: Image
 
-    constructor(id: number, name: string, desc: string, phone: string, location: string, developers: Developer[]) {
+    constructor(id: number, name: string, desc: string, phone: string, location: string, image: Image) {
         this.id = id
         this.name = name
         this.description = desc
         this.phone = phone,
         this.location = location
-        this.developers = developers
+        this.image = image
     }
 }

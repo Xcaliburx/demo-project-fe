@@ -1,1 +1,29 @@
-<p>developer works!</p>
+
+<div class="container pt-5">
+    <div class="row">
+        <div class="col">
+            <h1>Developer List</h1>
+            <button class="btn btn-primary" type="button" (click)="onAddDeveloper()">Add new Developer</button>
+            <ul class="list-group">
+                <li class="list-group-item mt-3" *ngFor="let developer of developers" >
+                    <a 
+                        [routerLink]="developer.id.toString()"
+                        routerLinkActive="active" 
+                        style="cursor: pointer; color: black; text-decoration: none;"
+                    >
+                        <div>
+                            <h3>{{ developer.name }}</h3>
+                            <p>{{ developer.location || 'Location' }}</p>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col">
+            <router-outlet></router-outlet>
+        </div>
+
+    </div>
+</div>
+

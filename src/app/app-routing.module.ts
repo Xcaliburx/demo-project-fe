@@ -1,42 +1,41 @@
-import { BrokerDetailComponent } from './broker/broker-detail/broker-detail.component';
-import { CreateBrokerComponent } from './broker/create-broker/create-broker.component';
-import { BrokerStartComponent } from './broker/broker-start/broker-start.component';
-import { BrokerComponent } from './broker/broker.component';
+import { ProfileComponent } from './profile/profile.component';
+import { LoggedInGuard } from './auth/loggedIn.guard';
+import { DeveloperGuard } from './auth/developer.guard';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { BrokerGuard } from './auth/broker.guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/brokers',
+    redirectTo: '/auth',
     pathMatch: 'full'
   },
   {
+    path: 'auth',
+    canActivate: [LoggedInGuard],
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
+  },
+  {
     path: 'brokers',
-    component: BrokerComponent,
-    children: [
-      {
-        path: '',
-        component: BrokerStartComponent
-      },
-      {
-        path: 'new',
-        component: CreateBrokerComponent
-      },
-      {
-        path: ':id',
-        component: BrokerDetailComponent
-      },
-      {
-        path: ':id/edit',
-        component: CreateBrokerComponent
-      }
-    ]
+    canActivate: [BrokerGuard],
+    loadChildren: () => import('./broker/broker.module').then(m => m.BrokerModule)
+  },
+  {
+    path: 'developers',
+    canActivate: [DeveloperGuard],
+    loadChildren: () => import('./developer/developer.module').then(m => m.DeveloperModule)
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -3,6 +3,7 @@ import { BrokerService } from './../broker.service';
 import { Broker } from './../broker.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-broker-detail',
@@ -14,19 +15,27 @@ export class BrokerDetailComponent implements OnInit, OnDestroy {
   id!: number
   subscription!: Subscription
   serviceSubs!: Subscription
+  image?: SafeUrl
   
   constructor(private brokerService: BrokerService, 
     private route: ActivatedRoute,
-    private router: Router) {}
+    private router: Router,
+    private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
+    this.image = undefined
     this.subscription = this.route.params
       .subscribe(
         (params: Params) => {
           this.id = +params['id']
-          this.serviceSubs = this.brokerService.getBrokerById((this.id))
+          this.serviceSubs = this.brokerService.getBrokerById(this.id)
             .subscribe(broker => {
               this.broker = broker
+              console.log(broker)
+              if (broker.image) {
+                let objectURL = 'data:image/png;base64,' + broker.image.file
+                this.image = this.sanitizer.bypassSecurityTrustUrl(objectURL)
+              }
             })
         }
       )
