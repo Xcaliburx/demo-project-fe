@@ -1,3 +1,4 @@
+import { ProjectComponent } from './project/project.component';
 import { DeveloperDetailComponent } from './developer-detail/developer-detail.component';
 import { CreateDeveloperComponent } from './create-developer/create-developer.component';
 import { DeveloperStartComponent } from './developer-start/developer-start.component';
@@ -17,6 +18,10 @@ const routes:  Routes = [
       {
         path: 'new',
         component: CreateDeveloperComponent
+      },
+      {
+        path: 'project',
+        component: ProjectComponent
       },
       {
         path: ':id',

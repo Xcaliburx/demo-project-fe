@@ -66,6 +66,13 @@ export class DeveloperDetailComponent implements OnInit, OnDestroy {
       }
     }
 
+    onDeleteProject(id: number) {
+      if (confirm("Are you sure you want to delete this project?")) {
+        this.developerService.deleteProject(id).subscribe()
+        this.router.navigate(['../'], {relativeTo: this.route})
+      }
+    }
+
     ngOnDestroy(): void {
       this.subscription.unsubscribe()
       this.serviceSubs.unsubscribe()

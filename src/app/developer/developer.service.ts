@@ -1,3 +1,4 @@
+import { Project } from './project/project.model';
 import { Developer } from './developer.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -39,6 +40,20 @@ export class DeveloperService {
   deleteDeveloper (id: number) {
     return this.http.delete(
       "http://localhost:8080/developer/" + id
+    )
+  }
+
+  createProject (project: Project) {
+    return this.http.post(
+      "http://localhost:8080/project",
+      project
+    )
+  }
+
+  deleteProject (id: number) {
+    console.log("test")
+    return this.http.delete(
+      "http://localhost:8080/project/" + id
     )
   }
 
