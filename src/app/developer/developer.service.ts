@@ -13,39 +13,39 @@ export class DeveloperService {
 
   fetchDeveloper () {
     return this.http.get<Developer[]>(
-      "http://localhost:8080/developer"
+      "http://localhost:8085/developer"
     )
   }
 
   getDeveloperById (id: number) {
     return this.http.get<Developer>(
-      "http://localhost:8080/developer/" + id
+      "http://localhost:8085/developer/" + id
     )
   }
 
   addDeveloper (developer: Developer) {
     return this.http.post(
-      "http://localhost:8080/developer",
+      "http://localhost:8085/developer",
       developer
     )
   }
 
   updateDeveloper (id: number, developer: Developer) {
     return this.http.put(
-      "http://localhost:8080/developer/" + id,
+      "http://localhost:8085/developer/" + id,
       developer
     )
   }
 
   deleteDeveloper (id: number) {
     return this.http.delete(
-      "http://localhost:8080/developer/" + id
+      "http://localhost:8085/developer/" + id
     )
   }
 
   createProject (project: Project) {
     return this.http.post(
-      "http://localhost:8080/project",
+      "http://localhost:8085/project",
       project
     )
   }
@@ -53,7 +53,7 @@ export class DeveloperService {
   deleteProject (id: number) {
     console.log("test")
     return this.http.delete(
-      "http://localhost:8080/project/" + id
+      "http://localhost:8085/project/" + id
     )
   }
 

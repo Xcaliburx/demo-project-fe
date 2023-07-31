@@ -12,33 +12,33 @@ export class BrokerService {
 
     fetchBroker () {
         return this.http.get<Broker[]>(
-            "http://localhost:8080/broker"
+            "http://localhost:8085/broker"
         )
     }
 
     getBrokerById (id: number) {
         return this.http.get<Broker>(
-            "http://localhost:8080/broker/" + id
+            "http://localhost:8085/broker/" + id
         )
     }
 
     addBroker (broker: Broker) {
         return this.http.post(
-            "http://localhost:8080/broker",
+            "http://localhost:8085/broker",
             broker
         )
     }
 
     updateBroker (id: number, broker: Broker) {
         return this.http.put(
-            "http://localhost:8080/broker/" + id,
+            "http://localhost:8085/broker/" + id,
             broker
         )
     }
 
     deleteBroker(id: number) {
         return this.http.delete(
-            "http://localhost:8080/broker/" + id,
+            "http://localhost:8085/broker/" + id,
         )
     }
 }

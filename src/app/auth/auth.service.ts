@@ -9,7 +9,8 @@ export interface AuthResponse {
     id: number,
     email: string,
     roles: string,
-    expiredDate: number
+    expiredDate: number,
+    sessionId: string
 }
 
 @Injectable({
@@ -23,7 +24,7 @@ export class AuthService {
 
     register(email: string, password: string, role: string) {
         return this.http.post<string>(
-            "http://localhost:8080/auth/register",
+            "http://localhost:8085/auth/register",
             {
                 email: email,
                 password: password,
@@ -36,7 +37,7 @@ export class AuthService {
 
     login(email: string, password: string) {
         return this.http.post<AuthResponse>(
-            "http://localhost:8080/auth/login",
+            "http://localhost:8085/auth/login",
             {
                 email: email,
                 password: password
@@ -50,7 +51,8 @@ export class AuthService {
                     resData.id,
                     resData.token,
                     resData.roles,
-                    resData.expiredDate
+                    resData.expiredDate,
+                    resData.sessionId
                 )
             })
         )
@@ -62,12 +64,12 @@ export class AuthService {
             id: number,
             email: string,
             roles: string,
-            expiredDate: number
+            expiredDate: number,
+            sessionId: string
         } = JSON.parse(localStorage.getItem('userData') || '{}')
 
         if (new Date(userData.expiredDate).getTime() < new Date().getTime()) {
-            console.log('expired')
-            this.clearSession()
+            this.logout()
             alert('Session expired')
         } else {
             const loadedUser = new User(
@@ -88,10 +90,10 @@ export class AuthService {
             console.log('expired')
             this.logout()
             alert('Session expired')
-         }, expirationDuration - 1000)
+         }, expirationDuration)
      }
 
-    private handleAuth(email: string, id: number, token: string, role: string, expiredDate: number) {
+    private handleAuth(email: string, id: number, token: string, role: string, expiredDate: number, sessionId : string) {
         const user = new User(
             email,
             id, 
@@ -101,7 +103,8 @@ export class AuthService {
         this.user.next(user)
         const userData = {
             ...user,
-            expiredDate: expiredDate
+            expiredDate: expiredDate,
+            sessionId: sessionId
         }
         localStorage.setItem('userData', JSON.stringify(userData))
         console.log(new Date(expiredDate))
@@ -123,9 +126,17 @@ export class AuthService {
     }
 
     logout() {
+        const userData: {
+            _token: string,
+            id: number,
+            email: string,
+            roles: string,
+            expiredDate: number,
+            sessionId: string
+        } = JSON.parse(localStorage.getItem('userData') || '{}')
         return this.http.post(
-            "http://localhost:8080/auth/logout",
-            null
+            "http://localhost:8085/auth/logout",
+            userData.sessionId
         ).subscribe(data => {
             this.clearSession()
         })

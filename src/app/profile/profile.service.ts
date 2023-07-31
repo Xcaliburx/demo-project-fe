@@ -15,7 +15,7 @@ export class ProfileService {
     formData.append('file', file)
 
     const req = new HttpRequest('POST', 
-      "http://localhost:8080/image",
+      "http://localhost:8085/image",
       formData,
       {
         reportProgress: true,
@@ -31,7 +31,7 @@ export class ProfileService {
       'email': string,
       'roles': string
     }>(
-      "http://localhost:8080/auth/user"
+      "http://localhost:8085/auth/user"
     )
   }
 }
