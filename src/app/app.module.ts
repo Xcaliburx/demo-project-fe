@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HeaderComponent } from './header/header.component';
 import { ProfileComponent } from './profile/profile.component';
+import { ServerErrorInterceptor } from './auth/server-error.interceptor.service';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,11 @@ import { ProfileComponent } from './profile/profile.component';
      {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,
+      multi: true
+     },
+     {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ServerErrorInterceptor,
       multi: true
      }
   ],
