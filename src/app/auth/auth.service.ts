@@ -8,7 +8,8 @@ export interface AuthResponse {
     token: string,
     id: number,
     email: string,
-    roles: string
+    roles: string,
+    expiredDate: number
 }
 
 @Injectable({
@@ -16,6 +17,7 @@ export interface AuthResponse {
 })
 export class AuthService {
     user = new BehaviorSubject<User | null>(null)
+    private tokenExpirationTimer: any
 
     constructor(private http: HttpClient, private router: Router) {}
 
@@ -42,11 +44,13 @@ export class AuthService {
         ).pipe(
             catchError(this.handleError),
             tap(resData => {
+                console.log(resData)
                 this.handleAuth(
                     resData.email,
                     resData.id,
                     resData.token,
-                    resData.roles
+                    resData.roles,
+                    resData.expiredDate
                 )
             })
         )
@@ -57,22 +61,37 @@ export class AuthService {
             _token: string,
             id: number,
             email: string,
-            roles: string
+            roles: string,
+            expiredDate: number
         } = JSON.parse(localStorage.getItem('userData') || '{}')
 
-        const loadedUser = new User(
-            userData.email,
-            userData.id,
-            userData.roles,
-            userData._token
-        )
-
-        if (loadedUser.token) {
-            this.user.next(loadedUser)
+        if (new Date(userData.expiredDate).getTime() < new Date().getTime()) {
+            console.log('expired')
+            this.clearSession()
+            alert('Session expired')
+        } else {
+            const loadedUser = new User(
+                userData.email,
+                userData.id,
+                userData.roles,
+                userData._token
+            )
+    
+            if (loadedUser.token) {
+                this.user.next(loadedUser)
+            }
         }
     }
 
-    private handleAuth(email: string, id: number, token: string, role: string) {
+    autoLogout (expirationDuration: number) {
+        this.tokenExpirationTimer = setTimeout(() => {
+            console.log('expired')
+            this.logout()
+            alert('Session expired')
+         }, expirationDuration - 1000)
+     }
+
+    private handleAuth(email: string, id: number, token: string, role: string, expiredDate: number) {
         const user = new User(
             email,
             id, 
@@ -80,7 +99,19 @@ export class AuthService {
             token
         )
         this.user.next(user)
-        localStorage.setItem('userData', JSON.stringify(user))
+        const userData = {
+            ...user,
+            expiredDate: expiredDate
+        }
+        localStorage.setItem('userData', JSON.stringify(userData))
+        console.log(new Date(expiredDate))
+        console.log(new Date())
+        console.log(new Date(expiredDate).getTime() -
+        new Date().getTime())
+        const expirationDuration = 
+            new Date(expiredDate).getTime() -
+            new Date().getTime()
+        this.autoLogout(expirationDuration)
     }
 
     private handleError(errorRes: HttpErrorResponse) {
@@ -92,8 +123,21 @@ export class AuthService {
     }
 
     logout() {
+        return this.http.post(
+            "http://localhost:8080/auth/logout",
+            null
+        ).subscribe(data => {
+            this.clearSession()
+        })
+    }
+
+    clearSession() {
         this.user.next(null)
         this.router.navigate(['/auth'])
         localStorage.removeItem('userData')
+        if (this.tokenExpirationTimer) {
+            clearTimeout(this.tokenExpirationTimer)
+        }
+        this.tokenExpirationTimer = null
     }
 }
